@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using QuizMastery.DataAccess.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<BaseContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        x => x.MigrationsHistoryTable("Migrations", "dbo"));
+});
 
 var app = builder.Build();
 
