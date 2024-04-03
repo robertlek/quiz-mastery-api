@@ -2,7 +2,7 @@
 
 namespace QuizMastery.DataAccess.Context;
 
-public class BaseContext(DbContextOptions options) : DbContext(options)
+public class BaseContext(DbContextOptions<BaseContext> options) : DbContext(options)
 {
     // Work in progress.
 }
