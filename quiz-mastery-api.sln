@@ -6,8 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizMastery.Web", "QuizMastery.Web\QuizMastery.Web.csproj", "{3EAD4B3B-8DBE-4E2A-B30B-5E9612E31102}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizMastery.Business", "QuizMastery.Business\QuizMastery.Business.csproj", "{EA8B220F-03F1-4D39-9C1C-A114AB227CCC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{090A5391-29BB-4DDF-B0E1-C36825FA61B5} = {090A5391-29BB-4DDF-B0E1-C36825FA61B5}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizMastery.DataAccess", "QuizMastery.DataAccess\QuizMastery.DataAccess.csproj", "{090A5391-29BB-4DDF-B0E1-C36825FA61B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizMastery.DataAccess", "QuizMastery.DataAccess\QuizMastery.DataAccess.csproj", "{090A5391-29BB-4DDF-B0E1-C36825FA61B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
