@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\QuizMastery.Business\QuizMastery.Business.csproj" />
     <ProjectReference Include="..\QuizMastery.DataAccess\QuizMastery.DataAccess.csproj" />
   </ItemGroup>
