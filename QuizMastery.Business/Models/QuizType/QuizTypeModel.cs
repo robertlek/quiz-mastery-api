@@ -1,4 +1,4 @@
-﻿namespace QuizMastery.Business.Models;
+﻿namespace QuizMastery.Business.Models.QuizType;
 
 public class QuizTypeModel
 {
