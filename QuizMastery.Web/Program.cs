@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using QuizMastery.Business.Services.AnswerService;
+using QuizMastery.Business.Services.QuestionService;
+using QuizMastery.Business.Services.QuizService;
+using QuizMastery.Business.Services.QuizTypeService;
 using QuizMastery.DataAccess.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +17,11 @@ builder.Services.AddDbContext<BaseContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         x => x.MigrationsHistoryTable("Migrations", "dbo"));
 });
+
+builder.Services.AddScoped<IAnswerService, AnswerService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
+builder.Services.AddScoped<IQuizTypeService, QuizTypeService>();
 
 var app = builder.Build();
 
