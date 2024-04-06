@@ -29,6 +29,12 @@ public class AnswerBuilder : IAnswerBuilder
         return this;
     }
 
+    public IAnswerBuilder WithId(Guid id)
+    {
+        _answer.Id = id;
+        return this;
+    }
+
     public IAnswerBuilder WithMessage(string message)
     {
         _answer.Message = message;
