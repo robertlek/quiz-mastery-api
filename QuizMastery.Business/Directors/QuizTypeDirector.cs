@@ -12,4 +12,14 @@ public class QuizTypeDirector
 
         return builder.WithName(quizType.Name).Build();
     }
+
+    public static QuizType BuildFromUpdate(QuizTypeModel quizType)
+    {
+        var builder = new QuizTypeBuilder();
+
+        return builder
+            .WithId(quizType.Id)
+            .WithName(quizType.Name)
+            .Build();
+    }
 }

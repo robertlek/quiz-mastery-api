@@ -17,6 +17,12 @@ public class QuizTypeBuilder : IQuizTypeBuilder
         return _quizType;
     }
 
+    public IQuizTypeBuilder WithId(Guid id)
+    {
+        _quizType.Id = id;
+        return this;
+    }
+
     public IQuizTypeBuilder WithName(string name)
     {
         _quizType.Name = name;

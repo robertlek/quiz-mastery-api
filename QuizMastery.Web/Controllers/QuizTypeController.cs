@@ -162,8 +162,9 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return NotFound(_response);
             }
 
-            await _quizTypeService.UpdateAsync(new QuizType { Id = id, Name = model.Name });
+            quizType = await _quizTypeService.UpdateAsync(QuizTypeDirector.BuildFromUpdate(model));
 
+            _response.Result = quizType;
             _response.StatusCode = HttpStatusCode.NoContent;
 
             return Ok(_response);
