@@ -115,6 +115,37 @@ public class QuizController(IQuizService quizService,
         return _response;
     }
 
+    [HttpGet]
+    [Route("GetQuizComponentsTree/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Response>> GetQuizComponentsTree(Guid id)
+    {
+        try
+        {
+            Quiz? quiz = await _quizService.GetAsync(x => x.Id == id);
+
+            if (quiz == null)
+            {
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.IsSuccess = false;
+
+                return NotFound(_response);
+            }
+
+            _response.Result = await _quizService.GetQuizComponentsTree(quiz);
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages.Add(exception.Message);
+        }
+
+        return _response;
+    }
+
     [HttpDelete]
     [Route("RemoveQuiz/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
