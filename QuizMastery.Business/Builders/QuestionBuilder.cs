@@ -17,6 +17,12 @@ public class QuestionBuilder : IQuestionBuilder
         return _question;
     }
 
+    public IQuestionBuilder WithId(Guid id)
+    {
+        _question.Id = id;
+        return this;
+    }
+
     public IQuestionBuilder WithMessage(string message)
     {
         _question.Message = message;

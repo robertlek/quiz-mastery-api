@@ -19,13 +19,21 @@ public class QuizBuilder : IQuizBuilder
 
     public IQuizBuilder WithDescription(string? description)
     {
-        _quiz.Description = description;
+        if (!string.IsNullOrEmpty(description))
+        {
+            _quiz.Description = description;
+        }
+        
         return this;
     }
 
     public IQuizBuilder WithImageUrl(string? imageUrl)
     {
-        _quiz.ImageUrl = imageUrl;
+        if (!string.IsNullOrEmpty(imageUrl))
+        {
+            _quiz.ImageUrl = imageUrl;
+        }
+        
         return this;
     }
 

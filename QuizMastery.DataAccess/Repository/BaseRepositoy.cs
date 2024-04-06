@@ -10,10 +10,12 @@ public class BaseRepositoy<T>(BaseContext db) : IBaseRepository<T> where T : cla
     private readonly BaseContext _db = db;
     private readonly DbSet<T> _dbSet = db.Set<T>();
 
-    public async Task AddAsync(T entity)
+    public async Task<T> AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
         await SaveAsync();
+
+        return entity;
     }
 
     public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
@@ -53,9 +55,11 @@ public class BaseRepositoy<T>(BaseContext db) : IBaseRepository<T> where T : cla
         await _db.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(T entity)
+    public async Task<T> UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
         await SaveAsync();
+
+        return entity;
     }
 }

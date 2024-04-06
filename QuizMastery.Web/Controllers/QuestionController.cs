@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuizMastery.Business.Directors;
 using QuizMastery.Business.Models;
-using QuizMastery.Business.Models.QuizType;
-using QuizMastery.Business.Services.QuizTypeService;
+using QuizMastery.Business.Models.Question;
+using QuizMastery.Business.Services.QuestionService;
+using QuizMastery.Business.Services.QuizService;
 using QuizMastery.DataAccess.Entities;
 using System.Net;
 
@@ -10,16 +11,18 @@ namespace quiz_mastery_api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBase
+public class QuestionController(IQuestionService questionService,
+    IQuizService quizService) : ControllerBase
 {
-    private readonly IQuizTypeService _quizTypeService = quizTypeService;
+    private readonly IQuestionService _questionService = questionService;
+    private readonly IQuizService _quizService = quizService;
     private readonly Response _response = new();
 
     [HttpPost]
-    [Route("AddQuizType")]
+    [Route("AddQuestion")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Response>> AddQuizType([FromBody] AddQuizTypeModel model)
+    public async Task<ActionResult<Response>> AddQuestion([FromBody] AddQuestionModel model)
     {
         try
         {
@@ -31,9 +34,19 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return BadRequest(_response);
             }
 
-            QuizType quizType = await _quizTypeService.AddAsync(QuizTypeDirector.BuildFromAdd(model));
+            Quiz? quiz = await _quizService.GetAsync(x => x.Id == model.QuizId);
 
-            _response.Result = quizType;
+            if (quiz == null)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+
+                return BadRequest(_response);
+            }
+
+            Question question = await _questionService.AddAsync(QuestionDirector.BuildFromAdd(model));
+
+            _response.Result = question;
             _response.StatusCode = HttpStatusCode.Created;
 
             return Ok(_response);
@@ -48,15 +61,15 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
     }
 
     [HttpGet]
-    [Route("GetAllQuizTypes")]
+    [Route("GetAllQuestions")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<Response>> GetAllQuizTypes()
+    public async Task<ActionResult<Response>> GetAllQuestions()
     {
         try
         {
-            IEnumerable<QuizType> quizTypes = await _quizTypeService.GetAllAsync();
+            IEnumerable<Question> questions = await _questionService.GetAllAsync();
 
-            _response.Result = quizTypes;
+            _response.Result = questions;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);
@@ -71,16 +84,16 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
     }
 
     [HttpGet]
-    [Route("GetQuizType/{id:guid}")]
+    [Route("GetQuestion/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Response>> GetQuizType(Guid id)
+    public async Task<ActionResult<Response>> GetQuestion(Guid id)
     {
         try
         {
-            QuizType? quizType = await _quizTypeService.GetAsync(x => x.Id == id);
+            Question? question = await _questionService.GetAsync(x => x.Id == id);
 
-            if (quizType == null)
+            if (question == null)
             {
                 _response.StatusCode = HttpStatusCode.NotFound;
                 _response.IsSuccess = false;
@@ -88,7 +101,7 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return NotFound(_response);
             }
 
-            _response.Result = quizType;
+            _response.Result = question;
             _response.StatusCode = HttpStatusCode.OK;
 
             return Ok(_response);
@@ -103,16 +116,16 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
     }
 
     [HttpDelete]
-    [Route("RemoveQuizType/{id:guid}")]
+    [Route("RemoveQuestion/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Response>> RemoveQuizType(Guid id)
+    public async Task<ActionResult<Response>> RemoveQuestion(Guid id)
     {
         try
         {
-            QuizType? quizType = await _quizTypeService.GetAsync(x => x.Id == id);
+            Question? question = await _questionService.GetAsync(x => x.Id == id);
 
-            if (quizType == null)
+            if (question == null)
             {
                 _response.StatusCode = HttpStatusCode.NotFound;
                 _response.IsSuccess = false;
@@ -120,7 +133,7 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return NotFound(_response);
             }
 
-            await _quizTypeService.RemoveAsync(quizType);
+            await _questionService.RemoveAsync(question);
 
             _response.StatusCode = HttpStatusCode.NoContent;
 
@@ -136,11 +149,11 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
     }
 
     [HttpPut]
-    [Route("UpdateQuizType/{id:guid}")]
+    [Route("UpdateQuestion/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Response>> UpdateQuizType(Guid id, [FromBody] QuizTypeModel model)
+    public async Task<ActionResult<Response>> UpdateQuestion(Guid id, [FromBody] QuestionModel model)
     {
         try
         {
@@ -152,9 +165,9 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return BadRequest(_response);
             }
 
-            QuizType? quizType = await _quizTypeService.GetAsync(x => x.Id == id, tracked: false);
+            Question? question = await _questionService.GetAsync(x => x.Id == id, tracked: false);
 
-            if (quizType == null)
+            if (question == null)
             {
                 _response.StatusCode = HttpStatusCode.NotFound;
                 _response.IsSuccess = false;
@@ -162,9 +175,19 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return NotFound(_response);
             }
 
-            quizType = await _quizTypeService.UpdateAsync(QuizTypeDirector.BuildFromUpdate(model));
+            Quiz? quiz = await _quizService.GetAsync(x => x.Id == model.QuizId);
 
-            _response.Result = quizType;
+            if (quiz == null)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+
+                return BadRequest(_response);
+            }
+
+            question = await _questionService.UpdateAsync(QuestionDirector.BuildFromUpdate(model));
+
+            _response.Result = question;
             _response.StatusCode = HttpStatusCode.NoContent;
 
             return Ok(_response);
