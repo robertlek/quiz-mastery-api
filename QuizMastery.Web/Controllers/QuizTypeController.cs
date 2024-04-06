@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuizMastery.Business.Directors;
 using QuizMastery.Business.Models;
 using QuizMastery.Business.Models.QuizType;
 using QuizMastery.Business.Services.QuizTypeService;
@@ -30,8 +31,9 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
                 return BadRequest(_response);
             }
 
-            await _quizTypeService.AddAsync(new QuizType { Name = model.Name });
+            QuizType quizType = await _quizTypeService.AddAsync(QuizTypeDirector.BuildFromAdd(model));
 
+            _response.Result = quizType;
             _response.StatusCode = HttpStatusCode.Created;
 
             return Ok(_response);
