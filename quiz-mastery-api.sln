@@ -12,7 +12,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizMastery.Business", "Qui
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizMastery.DataAccess", "QuizMastery.DataAccess\QuizMastery.DataAccess.csproj", "{090A5391-29BB-4DDF-B0E1-C36825FA61B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizMastery.Tests", "QuizMastery.Tests\QuizMastery.Tests.csproj", "{F1C95EC7-CB06-4BB2-8137-173F8E74125E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizMastery.Tests", "QuizMastery.Tests\QuizMastery.Tests.csproj", "{F1C95EC7-CB06-4BB2-8137-173F8E74125E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E5AE33F-6F14-412C-BCAA-AB23026235ED}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

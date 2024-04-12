@@ -29,8 +29,11 @@ public class QuizTypeBuilderTests
             .WithName(expectedName)
             .Build();
 
-        Assert.That(expectedId, Is.EqualTo(quizType.Id));
-        Assert.That(expectedName, Is.EqualTo(quizType.Name));
+        Assert.Multiple(() =>
+        {
+            Assert.That(expectedId, Is.EqualTo(quizType.Id));
+            Assert.That(expectedName, Is.EqualTo(quizType.Name));
+        });
     }
 
     [Test]
@@ -41,8 +44,11 @@ public class QuizTypeBuilderTests
 
         IQuizTypeBuilder returnedBuilder = builder.WithId(expectedId);
 
-        Assert.That(expectedId, Is.EqualTo(builder.Build().Id));
-        Assert.That(builder, Is.SameAs(returnedBuilder));
+        Assert.Multiple(() =>
+        {
+            Assert.That(expectedId, Is.EqualTo(builder.Build().Id));
+            Assert.That(builder, Is.SameAs(returnedBuilder));
+        });
     }
 
     [Test]
@@ -53,7 +59,10 @@ public class QuizTypeBuilderTests
 
         IQuizTypeBuilder returnedBuilder = builder.WithName(expectedName);
 
-        Assert.That(expectedName, Is.EqualTo(builder.WithName(expectedName).Build().Name));
-        Assert.That(builder, Is.SameAs(returnedBuilder));
+        Assert.Multiple(() =>
+        {
+            Assert.That(expectedName, Is.EqualTo(builder.WithName(expectedName).Build().Name));
+            Assert.That(builder, Is.SameAs(returnedBuilder));
+        });
     }
 }
