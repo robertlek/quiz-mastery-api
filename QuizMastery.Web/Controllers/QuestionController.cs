@@ -84,6 +84,40 @@ public class QuestionController(IQuestionService questionService,
     }
 
     [HttpGet]
+    [Route("GetAllQuestionsFromQuiz/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Response>> GetAllQuestionsFromQuiz(Guid id)
+    {
+        try
+        {
+            Quiz? quiz = await _quizService.GetAsync(x => x.Id == id);
+
+            if (quiz == null)
+            {
+                _response.StatusCode = HttpStatusCode.NotFound;
+                _response.IsSuccess = false;
+
+                return BadRequest(_response);
+            }
+
+            var questions = await _questionService.GetAllAsync(x => x.QuizId == quiz.Id);
+
+            _response.Result = questions;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages.Add(exception.Message);
+        }
+
+        return _response;
+    }
+
+    [HttpGet]
     [Route("GetQuestion/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
