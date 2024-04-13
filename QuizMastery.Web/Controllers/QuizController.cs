@@ -164,6 +164,7 @@ public class QuizController(IQuizService quizService,
                 return NotFound(_response);
             }
 
+            await _quizService.RemoveQuestionsAndAnswersOnCascade(quiz);
             await _quizService.RemoveAsync(quiz);
 
             _response.StatusCode = HttpStatusCode.NoContent;

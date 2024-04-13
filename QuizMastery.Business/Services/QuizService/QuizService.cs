@@ -9,7 +9,7 @@ namespace QuizMastery.Business.Services.QuizService;
 
 public class QuizService(BaseContext db,
     IQuestionService questionService,
-    IAnswerService answerService) : BaseRepositoy<Quiz>(db), IQuizService
+    IAnswerService answerService) : BaseRepository<Quiz>(db), IQuizService
 {
     private readonly IQuestionService _questionService = questionService;
     private readonly IAnswerService _answerService = answerService;
@@ -51,5 +51,17 @@ public class QuizService(BaseContext db,
         }
 
         return tree;
+    }
+
+    public async Task RemoveQuestionsAndAnswersOnCascade(Quiz quiz)
+    {
+        IEnumerable<Question> questions = await _questionService.GetAllAsync(x => x.QuizId == quiz.Id);
+
+        foreach (var question in questions)
+        {
+            await _answerService.RemoveAllAnswersByQuestionId(question.Id);
+        }
+
+        await _questionService.RemoveAllQuestionsByQuizId(quiz.Id);
     }
 }

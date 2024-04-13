@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace QuizMastery.DataAccess.Repository;
 
-public class BaseRepositoy<T>(BaseContext db) : IBaseRepository<T> where T : class
+public class BaseRepository<T>(BaseContext db) : IBaseRepository<T> where T : class
 {
     private readonly BaseContext _db = db;
     private readonly DbSet<T> _dbSet = db.Set<T>();
