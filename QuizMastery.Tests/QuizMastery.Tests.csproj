@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Web\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\QuizMastery.Business\QuizMastery.Business.csproj" />
   </ItemGroup>
 
