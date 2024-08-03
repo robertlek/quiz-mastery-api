@@ -3,7 +3,7 @@ using QuizMastery.DataAccess.Context;
 using QuizMastery.DataAccess.Entities;
 using QuizMastery.DataAccess.Repository;
 
-namespace QuizMastery.Tests.DataAccess.Repository;
+namespace QuizMastery.DataAccess.UnitTests.Repository;
 
 [TestFixture]
 public class BaseRepositoryTests
@@ -16,6 +16,7 @@ public class BaseRepositoryTests
             .Options;
 
         using var context = new BaseContext(options);
+
         var repository = new BaseRepository<QuizType>(context);
         var entity = new QuizType()
         {
@@ -76,7 +77,7 @@ public class BaseRepositoryTests
         Guid secondId = Guid.NewGuid();
         var firstQuizType = new QuizType() { Id = firstId, Name = "FirstQuizType" };
         var secondQuizType = new QuizType() { Id = secondId, Name = "SecondQuizType" };
-        
+
         context.AddRange(firstQuizType, secondQuizType);
         context.SaveChanges();
 
