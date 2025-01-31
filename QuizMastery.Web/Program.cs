@@ -8,7 +8,6 @@ using QuizMastery.DataAccess.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,7 +20,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+        builder
+            .WithOrigins("http://localhost:5173")
+            .WithOrigins("http://localhost:8000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 builder.Services.AddScoped<IAnswerService, AnswerService>();
