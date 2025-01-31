@@ -84,6 +84,29 @@ public class QuizController(IQuizService quizService,
     }
 
     [HttpGet]
+    [Route("GetFilteredQuizzes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<Response>> GetFilteredQuizzes([FromQuery] string? filter)
+    {
+        try
+        {
+            IEnumerable<Quiz> quizzes = await _quizService.GetFilteredQuizzes(filter);
+
+            _response.Result = quizzes;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages.Add(exception.Message);
+        }
+
+        return _response;
+    }
+
+    [HttpGet]
     [Route("GetQuiz/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

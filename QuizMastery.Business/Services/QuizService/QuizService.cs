@@ -1,4 +1,5 @@
-﻿using QuizMastery.Business.Components;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizMastery.Business.Components;
 using QuizMastery.Business.Services.AnswerService;
 using QuizMastery.Business.Services.QuestionService;
 using QuizMastery.DataAccess.Context;
@@ -7,12 +8,11 @@ using QuizMastery.DataAccess.Repository;
 
 namespace QuizMastery.Business.Services.QuizService;
 
-public class QuizService(BaseContext db,
-    IQuestionService questionService,
-    IAnswerService answerService) : BaseRepository<Quiz>(db), IQuizService
+public class QuizService(BaseContext db, IAnswerService answerService, IQuestionService questionService) : BaseRepository<Quiz>(db), IQuizService
 {
-    private readonly IQuestionService _questionService = questionService;
+    private readonly BaseContext _db = db;
     private readonly IAnswerService _answerService = answerService;
+    private readonly IQuestionService _questionService = questionService;
 
     public async Task<object> GetQuizComponentsTree(Quiz quiz)
     {
@@ -63,5 +63,17 @@ public class QuizService(BaseContext db,
         }
 
         await _questionService.RemoveAllQuestionsByQuizId(quiz.Id);
+    }
+
+    public async Task<IEnumerable<Quiz>> GetFilteredQuizzes(string? filter)
+    {
+        IEnumerable<Quiz> quizzes = await _db.Quizzes.ToListAsync();
+
+        if (!string.IsNullOrEmpty(filter))
+        {
+            quizzes = quizzes.Where(quiz => quiz.Name.Contains(filter, StringComparison.CurrentCultureIgnoreCase)).ToList();
+        }
+
+        return quizzes;
     }
 }

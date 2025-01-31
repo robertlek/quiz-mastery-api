@@ -7,4 +7,5 @@ public interface IQuizService : IBaseRepository<Quiz>
 {
     Task<object> GetQuizComponentsTree(Quiz quiz);
     Task RemoveQuestionsAndAnswersOnCascade(Quiz quiz);
+    Task<IEnumerable<Quiz>> GetFilteredQuizzes(string? filter);
 }
