@@ -102,6 +102,30 @@ public class QuizTypeController(IQuizTypeService quizTypeService) : ControllerBa
         return _response;
     }
 
+    [HttpGet]
+    [Route("GetQuizTypeStatistics/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Response>> GetQuizTypeStatistics(Guid id)
+    {
+        try
+        {
+            QuizTypeStatisticsModel result = await _quizTypeService.GetQuizTypeStatistics(id);
+
+            _response.Result = result;
+            _response.StatusCode = HttpStatusCode.OK;
+
+            return Ok(_response);
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.ErrorMessages.Add(exception.Message);
+        }
+
+        return _response;
+    }
+
     [HttpDelete]
     [Route("RemoveQuizType/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
